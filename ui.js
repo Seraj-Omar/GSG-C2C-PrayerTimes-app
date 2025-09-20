@@ -77,3 +77,22 @@ function renderCountries(countries) {
 
   countrySelect.disabled = false; 
 }
+
+
+function renderCities(cities) {
+  citySelect.innerHTML = "";
+  
+  const defaultOption = document.createElement("option");
+  defaultOption.value = "";
+  defaultOption.textContent = "Select City...";
+  citySelect.appendChild(defaultOption);
+
+  cities.forEach(city => {
+    const option = document.createElement("option");
+    option.value = city;
+    option.textContent = city;
+    citySelect.appendChild(option);
+  });
+
+  citySelect.disabled = false;
+}
