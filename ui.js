@@ -59,3 +59,21 @@ resetBtn.addEventListener("click", () => {
   clearError();
   localStorage.clear();
 });
+
+
+function renderCountries(countries) {
+  countrySelect.innerHTML = ""; 
+  const defaultOption = document.createElement("option");
+  defaultOption.value = "";
+  defaultOption.textContent = "Select Country...";
+  countrySelect.appendChild(defaultOption);
+
+  countries.forEach(country => {
+    const option = document.createElement("option");
+    option.value = country.name.common; 
+    option.textContent = country.name.common;
+    countrySelect.appendChild(option);
+  });
+
+  countrySelect.disabled = false; 
+}
