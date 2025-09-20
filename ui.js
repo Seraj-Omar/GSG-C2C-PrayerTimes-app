@@ -36,3 +36,12 @@ function formatCountdown(ms) {
   let s = totalSec % 60;
   return `${h.toString().padStart(2,"0")}:${m.toString().padStart(2,"0")}:${s.toString().padStart(2,"0")}`;
 }
+
+
+function showError(message) {
+  errorEl.textContent = message;
+}
+
+function clearError() {
+  errorEl.textContent = "";
+}
