@@ -21,11 +21,11 @@ function renderPrayerTimes(prayers) {
 
 function renderNextPrayer(next) {
   if (next) {
-    nextPrayerEl.textContent = `${next.name} at ${next.time}`;
-    countdownEl.textContent = formatCountdown(next.remaining);
+    nextPrayer.textContent = `${next.name} at ${next.time}`;
+    countdown.textContent = formatCountdown(next.remaining);
   } else {
-    nextPrayerEl.textContent = "No more prayers today";
-    countdownEl.textContent = "--:--:--";
+    nextPrayer.textContent = "No more prayers today";
+    countdown.textContent = "--:--:--";
   }
 }
 
@@ -39,7 +39,7 @@ function formatCountdown(ms) {
 
 
 function showError(message) {
-  errorEl.textContent = message;
+  errorDiv.textContent = message;
 }
 
 function clearError() {
