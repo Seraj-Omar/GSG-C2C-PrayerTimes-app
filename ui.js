@@ -3,10 +3,11 @@ const countrySelect = document.getElementById("country");
 const citySelect = document.getElementById("city");
 const methodSelect = document.getElementById("method");
 const resetBtn = document.getElementById("resetBtn");
-const prayerTimesTable = document.getElementById("prayerTimes");
-const nextPrayer = document.getElementById("nextPrayer");
-const countdown = document.getElementById("countdown");
-const errorDiv = document.getElementById("error");
+const prayerTableBody = document.getElementById("prayerTimes");
+const nextPrayerEl = document.getElementById("nextPrayer");
+const countdownEl = document.getElementById("countdown");
+const errorEl = document.getElementById("error");
+
 
 const cityCache = {};
 
@@ -22,11 +23,11 @@ function renderPrayerTimes(prayers) {
 
 function renderNextPrayer(next) {
   if (next) {
-    nextPrayer.textContent = `${next.name} at ${next.time}`;
-    countdown.textContent = formatCountdown(next.remaining);
+    nextPrayerEl.textContent = `${next.name} at ${next.time}`;
+    countdownEl.textContent = formatCountdown(next.remaining);
   } else {
-    nextPrayer.textContent = "No more prayers today";
-    countdown.textContent = "--:--:--";
+    nextPrayerEl.textContent = "No more prayers today";
+    countdownEl.textContent = "--:--:--";
   }
 }
 
@@ -40,7 +41,7 @@ function formatCountdown(ms) {
 
 
 function showError(message) {
-  errorDiv.textContent = message;
+  errorEl.textContent = message;
 }
 
 function clearError() {
@@ -191,14 +192,3 @@ citySelect.addEventListener("change", fetchPrayerTimes);
 methodSelect.addEventListener("change", fetchPrayerTimes);
 
 
-resetBtn.addEventListener("click", () => {
-  continentSelect.value = "africa";
-  countrySelect.value = "";
-  citySelect.value = "";
-  methodSelect.value = "";
-  prayerTableBody.querySelectorAll("td:nth-child(2)").forEach(td => td.textContent = "-");
-  nextPrayerEl.textContent = "--";
-  countdownEl.textContent = "00:00:00";
-  clearError();
-  localStorage.clear();
-});
