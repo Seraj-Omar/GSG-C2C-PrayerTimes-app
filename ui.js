@@ -45,3 +45,17 @@ function showError(message) {
 function clearError() {
   errorEl.textContent = "";
 }
+
+
+
+resetBtn.addEventListener("click", () => {
+  continentSelect.value = "africa";
+  countrySelect.value = "";
+  citySelect.value = "";
+  methodSelect.value = "";
+  prayerTableBody.querySelectorAll("td:nth-child(2)").forEach(td => td.textContent = "-");
+  nextPrayerEl.textContent = "--";
+  countdownEl.textContent = "00:00:00";
+  clearError();
+  localStorage.clear();
+});
