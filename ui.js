@@ -96,3 +96,20 @@ function renderCities(cities) {
 
   citySelect.disabled = false;
 }
+
+
+function renderMethods(methods) {
+  methodSelect.innerHTML = "";
+  
+  const defaultOption = document.createElement("option");
+  defaultOption.value = "";
+  defaultOption.textContent = "Select Method...";
+  methodSelect.appendChild(defaultOption);
+
+  methods.forEach(method => {
+    const option = document.createElement("option");
+    option.value = method.id; 
+    option.textContent = method.name;
+    methodSelect.appendChild(option);
+  });
+}
