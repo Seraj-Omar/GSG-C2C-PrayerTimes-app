@@ -8,6 +8,7 @@ const nextPrayer = document.getElementById("nextPrayer");
 const countdown = document.getElementById("countdown");
 const errorDiv = document.getElementById("error");
 
+const cityCache = {};
 
 function renderPrayerTimes(prayers) {
   const prayerNames = ["Fajr", "Dhuhr", "Asr", "Maghrib", "Isha"];
@@ -113,3 +114,91 @@ function renderMethods(methods) {
     methodSelect.appendChild(option);
   });
 }
+
+
+continentSelect.addEventListener("change", async () => {
+  const selectedContinent = continentSelect.value;
+
+  countrySelect.innerHTML = "<option>Loading...</option>";
+  countrySelect.disabled = true;
+  citySelect.innerHTML = "<option>Select City...</option>";
+  citySelect.disabled = true;
+
+  try {
+    const res = await fetch(`https://restcountries.com/v3.1/region/${selectedContinent}`);
+    const countries = await res.json();
+    renderCountries(countries);
+  } catch (error) {
+    showError("Failed to load countries.");
+  }
+});
+
+countrySelect.addEventListener("change", async () => {
+  const selectedCountry = countrySelect.value;
+  if (!selectedCountry) return;
+
+  citySelect.innerHTML = "<option>Loading...</option>";
+  citySelect.disabled = true;
+
+  try {
+    if (cityCache[selectedCountry]) {
+      renderCities(cityCache[selectedCountry]);
+    } else {
+      const res = await fetch("https://countriesnow.space/api/v0.1/countries/cities", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ country: selectedCountry })
+      });
+      const data = await res.json();
+      cityCache[selectedCountry] = data.data;
+      renderCities(data.data);
+    }
+  } catch (error) {
+    showError("Failed to load cities.");
+  }
+});
+
+
+async function fetchPrayerTimes() {
+  const city = citySelect.value;
+  const method = methodSelect.value;
+  if (!city || !method) return;
+
+  try {
+    const res = await fetch(`https://api.aladhan.com/v1/timingsByCity?city=${city}&method=${method}`);
+    const data = await res.json();
+
+    const prayers = {
+      Fajr: data.data.timings.Fajr,
+      Dhuhr: data.data.timings.Dhuhr,
+      Asr: data.data.timings.Asr,
+      Maghrib: data.data.timings.Maghrib,
+      Isha: data.data.timings.Isha
+    };
+
+    renderPrayerTimes(prayers);
+
+    const next = getNextPrayer(prayers); 
+    renderNextPrayer(next);
+
+    clearError();
+  } catch (error) {
+    showError("Failed to load prayer times.");
+  }
+}
+
+citySelect.addEventListener("change", fetchPrayerTimes);
+methodSelect.addEventListener("change", fetchPrayerTimes);
+
+
+resetBtn.addEventListener("click", () => {
+  continentSelect.value = "africa";
+  countrySelect.value = "";
+  citySelect.value = "";
+  methodSelect.value = "";
+  prayerTableBody.querySelectorAll("td:nth-child(2)").forEach(td => td.textContent = "-");
+  nextPrayerEl.textContent = "--";
+  countdownEl.textContent = "00:00:00";
+  clearError();
+  localStorage.clear();
+});
