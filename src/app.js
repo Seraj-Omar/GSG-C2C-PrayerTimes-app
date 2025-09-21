@@ -1,5 +1,5 @@
 import { CONTINENTS } from "./config.js";
-import { fetchCountriesByContinent } from "./api/api.js";
+import { fetchCountriesByContinent, fetchCitiesByCountry } from "./api/api.js";
 
 const continentSelect = document.getElementById("continent");
 const countrySelect = document.getElementById("country");
@@ -22,6 +22,7 @@ function populateContinents() {
 
 function setupEventListeners() {
   continentSelect.addEventListener("change", handleContinentChange);
+  countrySelect.addEventListener("change", handleCountryChange);
 }
 
 async function handleContinentChange() {
@@ -50,5 +51,32 @@ async function handleContinentChange() {
     countrySelect.innerHTML =
       '<option value="">Error loading countries</option>';
     console.error("Error fetching countries:", error);
+  }
+}
+
+async function handleCountryChange() {
+  const selectedCountry = countrySelect.value;
+
+  citySelect.innerHTML = '<option value="">Select City....</option>';
+  citySelect.disabled = true;
+  if (!selectedCountry) {
+    return;
+  }
+
+  try {
+    citySelect.innerHTML = '<option value="">Loading cities...</option>';
+    const cities = await fetchCitiesByCountry(selectedCountry);
+    citySelect.innerHTML = '<option value="">Select City....</option>';
+    cities.forEach((city) => {
+      const option = document.createElement("option");
+      option.value = city;
+      option.textContent = city;
+      citySelect.appendChild(option);
+    });
+
+    citySelect.disabled = false;
+  } catch (error) {
+    citySelect.innerHTML = '<option value="">Error loading cities</option>';
+    console.error("Error fetching cities:", error);
   }
 }
