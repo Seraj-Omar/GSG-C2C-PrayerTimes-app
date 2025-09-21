@@ -1,9 +1,15 @@
-import { CONTINENTS } from "./config.js";
-import { fetchCountriesByContinent, fetchCitiesByCountry } from "./api/api.js";
+import { CONTINENTS, PRAYERS, DEFAULT_METHOD } from "./config.js";
+import {
+  fetchCountriesByContinent,
+  fetchCitiesByCountry,
+  fetchPrayerTimes,
+} from "./api/api.js";
 
 const continentSelect = document.getElementById("continent");
 const countrySelect = document.getElementById("country");
 const citySelect = document.getElementById("city");
+const methodSelect = document.getElementById("method");
+const prayerTimesTable = document.getElementById("prayerTimes");
 
 document.addEventListener("DOMContentLoaded", () => {
   populateContinents();
@@ -23,6 +29,8 @@ function populateContinents() {
 function setupEventListeners() {
   continentSelect.addEventListener("change", handleContinentChange);
   countrySelect.addEventListener("change", handleCountryChange);
+  citySelect.addEventListener("change", handleCityChange);
+  methodSelect.addEventListener("change", handleMethodChange);
 }
 
 async function handleContinentChange() {
@@ -79,4 +87,62 @@ async function handleCountryChange() {
     citySelect.innerHTML = '<option value="">Error loading cities</option>';
     console.error("Error fetching cities:", error);
   }
+}
+
+async function handleCityChange() {
+  await updatePrayerTimes();
+}
+
+async function handleMethodChange() {
+  await updatePrayerTimes();
+}
+
+async function updatePrayerTimes() {
+  const city = citySelect.value;
+  const country = countrySelect.value;
+  const method = methodSelect.value || DEFAULT_METHOD;
+
+  if (!city || !country) {
+    resetPrayerTimesTable();
+    return;
+  }
+
+  try {
+    showLoadingState();
+
+    const prayerTimes = await fetchPrayerTimes(city, country, method);
+    updatePrayerTimesTable(prayerTimes);
+  } catch (error) {
+    console.error("Error fetching prayer times:", error);
+    resetPrayerTimesTable();
+  }
+}
+
+function showLoadingState() {
+  const rows = prayerTimesTable.querySelectorAll("tr");
+  rows.forEach((row) => {
+    const timeCell = row.cells[1];
+    if (timeCell) timeCell.textContent = "Loading...";
+  });
+}
+
+function updatePrayerTimesTable(prayerTimes) {
+  const rows = prayerTimesTable.querySelectorAll("tr");
+
+  rows.forEach((row, index) => {
+    const prayerName = PRAYERS[index];
+    const timeCell = row.cells[1];
+
+    if (timeCell && prayerTimes[prayerName]) {
+      timeCell.textContent = prayerTimes[prayerName];
+    }
+  });
+}
+
+function resetPrayerTimesTable() {
+  const rows = prayerTimesTable.querySelectorAll("tr");
+  rows.forEach((row) => {
+    const timeCell = row.cells[1];
+    if (timeCell) timeCell.textContent = "-";
+  });
 }

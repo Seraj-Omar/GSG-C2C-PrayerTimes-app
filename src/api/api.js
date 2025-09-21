@@ -18,3 +18,11 @@ export async function fetchCitiesByCountry(country) {
   if (!data.data) throw new Error("No cities found");
   return data.data.sort();
 }
+
+export async function fetchPrayerTimes(city, country, method) {
+  const url = `${API_ENDPOINTS.aladhan}?city=${encodeURIComponent(
+    city
+  )}&country=${encodeURIComponent(country)}&method=${method}`;
+  const data = await safeFetch(url);
+  return data.data.timings;
+}
