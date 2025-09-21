@@ -1,104 +1,96 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Prayer Times</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400;1,700&family=Crimson+Text:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&family=Oswald:wght@200..700&family=Titillium+Web:ital,wght@0,200;0,300;0,400;0,600;0,700;0,900;1,200;1,300;1,400;1,600;1,700&display=swap" rel="stylesheet">
-     <link rel="stylesheet" href="style.css">
-</head>
-<body>
-
-
-
-
-
-    
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400;1,700&family=Crimson+Text:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&family=Oswald:wght@200..700&family=Titillium+Web:ital,wght@0,200;0,300;0,400;0,600;0,700;0,900;1,200;1,300;1,400;1,600;1,700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
     <header>
-    <h1>Prayer Times App</h1>
-    <p class="quran-verse">حَافِظُوا عَلَى الصَّلَوَاتِ وَالصَّلَاةِ الْوُسْطَى وَقُومُوا لِلَّهِ قَانِتِينَ" (البقرة: 238)"</p>
-  </header>
+      <h1>Prayer Times App</h1>
+      <p class="quran-verse">
+        حَافِظُوا عَلَى الصَّلَوَاتِ وَالصَّلَاةِ الْوُسْطَى وَقُومُوا لِلَّهِ
+        قَانِتِينَ" (البقرة: 238)"
+      </p>
+    </header>
 
-<div id="selector">
-
+    <div id="selector">
       <label for="continent">Continent:</label>
       <select id="continent">
-  <option value="africa">Africa</option>
-  <option value="americas">Americas</option>
-  <option value="asia">Asia</option>
-  <option value="europe">Europe</option>
-  <option value="oceania">Oceania</option>
+        <option value="africa">Africa</option>
+        <option value="americas">Americas</option>
+        <option value="asia">Asia</option>
+        <option value="europe">Europe</option>
+        <option value="oceania">Oceania</option>
       </select>
-
-
-
 
       <label for="country">Country:</label>
-    <select id="country" disabled>
+      <select id="country" disabled>
         <option value="">Select Country....</option>
-
-
       </select>
 
-<label for="city">City:</label>
+      <label for="city">City:</label>
       <select id="city" disabled>
         <option value="">Select City....</option>
       </select>
 
-<label for="method">Calculation Method:</label>
+      <label for="method">Calculation Method:</label>
       <select id="method">
         <option value="">Select Method....</option>
- <option value="0">Karachi</option>
- <option value="1">ISNA</option>
- <option value="2">Egyptian</option>
- <option value="3">Umm Al-Qura</option>
- <option value="4">Muslim World League</option>
- <option value="5">Tehran</option>
- <option value="7">Shia Ithna-Ashari</option>
+        <option value="0">Karachi</option>
+        <option value="1">ISNA</option>
+        <option value="2">Egyptian</option>
+        <option value="3">Umm Al-Qura</option>
+        <option value="4">Muslim World League</option>
+        <option value="5">Tehran</option>
+        <option value="7">Shia Ithna-Ashari</option>
+      </select>
+    </div>
+    <button id="Resetbtn">Reset</button>
+    <div class="main">
+      <div id="container">
+        <h2 id="table_title">Prayer Times</h2>
+        <div id="table">
+          <table>
+            <tbody id="prayerTimes">
+              <tr>
+                <td>Fajr</td>
+                <td>-</td>
+              </tr>
+              <tr>
+                <td>Dhuhr</td>
+                <td>-</td>
+              </tr>
+              <tr>
+                <td>Asr</td>
+                <td>-</td>
+              </tr>
+              <tr>
+                <td>Maghrib</td>
+                <td>-</td>
+              </tr>
+              <tr>
+                <td>Isha</td>
+                <td>-</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
 
-
- </select>
-
-
-</div>
-<button id="Resetbtn">Reset</button>
-<div class="main">
-<div id="container">
-    <h2 id="table_title">Prayer Times</h2>
-<div id="table">
-
-      <table>
-       
-
-        <tbody id="prayerTimes">
-          <tr>
-            <td>Fajr</td>
-            <td>-</td></tr>
-          <tr>
-            <td>Dhuhr</td>
-            <td>-</td></tr>
-          <tr>
-            <td>Asr</td>
-            <td>-</td></tr>
-          <tr>
-            <td>Maghrib</td>
-            <td>-</td></tr>
-          <tr>
-            <td>Isha</td>
-            <td>-</td></tr>
-        </tbody>
-      </table>
-</div>
-</div>
-
-<div id="Prayer_banner">
-     <h2>Next Prayer</h2>
-      <p id="nextPrayer">--</p>
-      <p id="countdown">00:00:00</p>
-</div>
-</div>
-<div id="error"></div>
-</body>
+      <div id="Prayer_banner">
+        <h2>Next Prayer</h2>
+        <p id="nextPrayer">--</p>
+        <p id="countdown">00:00:00</p>
+      </div>
+    </div>
+    <div id="error"></div>
+  </body>
 </html>
