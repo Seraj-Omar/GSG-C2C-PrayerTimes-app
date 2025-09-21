@@ -1,47 +1,37 @@
-
 * {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-    
-    
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
-
 
 body {
-   background-image: url(bg.jpg);
-   background-size: cover;
-   background-position:  bottom;
-    line-height: 1.6;
-    padding: 20px;
-    overflow-x: hidden;
-     
-     min-height: 100vh;
-      justify-content: flex-start;
+  background-image: url(bg.jpg);
+  background-size: cover;
+  background-position: bottom;
+  line-height: 1.6;
+  padding: 20px;
+  overflow-x: hidden;
 
-      
+  min-height: 100vh;
+  justify-content: flex-start;
 }
-p{
-   font-size: 20px;
-    font-family: 'Amiri', serif; 
-    
+p {
+  font-size: 20px;
+  font-family: "Amiri", serif;
 }
 
 /*header*/
 
-
 header {
-    text-align: center;
-    margin-bottom: 30px;
+  text-align: center;
+  margin-bottom: 30px;
 }
 
 header h1 {
-    font-size: 2.2rem;
-   color: rgb(255, 255, 255);
-padding-bottom: 15px;
- font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-
-
+  font-size: 2.2rem;
+  color: rgb(255, 255, 255);
+  padding-bottom: 15px;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
 /*selectors*/
@@ -51,47 +41,37 @@ padding-bottom: 15px;
   justify-content: space-around;
   gap: 10px;
   padding: 20px;
-  
-
 }
-
 
 #selector label {
-    display: block;
-    font-weight: bold;
-    padding-top: 13px;
-     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-     
+  display: block;
+  font-weight: bold;
+  padding-top: 13px;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
-
 #selector select {
-
   background-color: rgb(19, 19, 87);
   color: white;
   font-weight: bold;
   border: 2px solid rgb(255, 255, 255);
   border-radius: 25px;
- padding: 6px 10px;  
+  padding: 6px 10px;
   font-size: 1rem;
   cursor: pointer;
-  min-width: 140px; 
+  min-width: 140px;
 }
 
-
-  #selector select:focus {
+#selector select:focus {
   outline: none;
   border-color: dodgerblue;
   box-shadow: 0 0 6px rgba(30, 144, 255, 0.6);
 }
-  
 
+option {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
 
-  option{
-     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  }
-
-  
 /*reset btn*/
 
 #resetBtn {
@@ -110,65 +90,58 @@ padding-bottom: 15px;
     font-weight: 600;
 }
 
-
 #Resetbtn:hover {
-    background-color: #242325;
+  background-color: #242325;
 }
 
 #container {
-    display: flex;
-  flex-direction: column;   
+  display: flex;
+  flex-direction: column;
 
   margin-top: 50px;
   width: 90%;
-  max-width: 600px;  
+  max-width: 600px;
 }
 /*table*/
 
 #table {
-    
-    margin-top: 20px; 
-    width: 90%;
-    max-width: 600px;
+  margin-top: 20px;
+  width: 90%;
+  max-width: 600px;
 }
 
 #table table {
-   
-    width: 100%;
-    border-collapse: separate; 
-    border-spacing: 10px;     
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 10px;
 }
 
- #table td {
-    padding: 12px 15px;
-    text-align: center;
-    border-radius: 15px;      
-     background-color: rgb(19, 19, 87);   
-    color: white;
-   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    font-weight: 600;
+#table td {
+  padding: 12px 15px;
+  text-align: center;
+  border-radius: 15px;
+  background-color: rgb(19, 19, 87);
+  color: white;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  font-weight: 600;
 }
 
+#table_title {
+  font-size: 28px;
+  font-weight: 700;
+  color: rgb(253, 253, 253);
 
-#table_title{
- 
-    
-    font-size: 28px;              
-    font-weight: 700;            
-    color: rgb(253, 253, 253);               
-   
-    text-align: center;        
-     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-
+  text-align: center;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
-.main{
-  display: flex;               
-  justify-content: center;    
-  align-items: flex-start;     
-  gap: 40px;                  
+.main {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 40px;
   margin-top: 50px;
-  flex-wrap: wrap;             
+  flex-wrap: wrap;
 }
 
 /*Prayer_banner */
@@ -178,15 +151,15 @@ padding-bottom: 15px;
   padding: 15px 20px;
   border-radius: 12px;
   text-align: center;
-  font-family: 'Titillium Web', sans-serif;
+  font-family: "Titillium Web", sans-serif;
   min-width: 250px;
- height: auto; 
+  height: auto;
   margin-top: 190px;
 }
 
 #Prayer_banner h2 {
   margin: 0 0 10px 0;
-  color: rgb(19, 19, 87); 
+  color: rgb(19, 19, 87);
   font-size: 1.2rem;
 }
 
@@ -199,110 +172,94 @@ padding-bottom: 15px;
 /*error message*/
 
 #error {
-    max-width: 600px;
-    margin: 20px auto;           
-    padding: 15px 20px;           
-    background-color: #eb796d;   
-    color: white;                 
-    text-align: center;
-    font-weight: bold;
-    border-radius: 12px;      
-    box-shadow: 0 2px 6px rgba(0,0,0,0.3); 
-    display: none;             
+  max-width: 600px;
+  margin: 20px auto;
+  padding: 15px 20px;
+  background-color: #eb796d;
+  color: white;
+  text-align: center;
+  font-weight: bold;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+  display: none;
 }
-
 
 /*responsive*/
 
 @media (max-width: 992px) {
-    #selector {
-        flex-direction: column;
-        align-items: center;
-        gap: 15px;
-        padding: 15px;
-    }
+  #selector {
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    padding: 15px;
+  }
 
-    #selector select {
-        min-width: 90%;
-    }
+  #selector select {
+    min-width: 90%;
+  }
 
-    #Resetbtn {
-        width: 90%;
-        margin: 15px 0 0 0;
-    }
+  #Resetbtn {
+    width: 90%;
+    margin: 15px 0 0 0;
+  }
 
-    .main {
-        flex-direction: column;
-        align-items: center;
-        gap: 30px;
-    }
+  .main {
+    flex-direction: column;
+    align-items: center;
+    gap: 30px;
+  }
 
-    #table, #Prayer_banner {
-        width: 90%;
-        max-width: none;
-    }
+  #table,
+  #Prayer_banner {
+    width: 90%;
+    max-width: none;
+  }
 
-    #Prayer_banner {
-        margin-top: 0;
-    }
+  #Prayer_banner {
+    margin-top: 0;
+  }
 }
-
 
 @media (max-width: 480px) {
-    header h1 {
-        font-size: 1.5rem;
-    }
+  header h1 {
+    font-size: 1.5rem;
+  }
 
-    .quran-verse {
-        font-size: 1rem;
-        padding: 0 10px;
-        text-align: center;
-    }
+  .quran-verse {
+    font-size: 1rem;
+    padding: 0 10px;
+    text-align: center;
+  }
 
-    #selector label {
-        font-size: 0.9rem;
-    }
+  #selector label {
+    font-size: 0.9rem;
+  }
 
-    #selector select {
-        font-size: 0.9rem;
-        padding: 5px 8px;
-    }
+  #selector select {
+    font-size: 0.9rem;
+    padding: 5px 8px;
+  }
 
-    #Resetbtn {
-        font-size: 0.9rem;
-        padding: 8px 10px;
-    }
+  #Resetbtn {
+    font-size: 0.9rem;
+    padding: 8px 10px;
+  }
 
-    #table td {
-        font-size: 0.85rem;
-        padding: 8px 10px;
-    }
+  #table td {
+    font-size: 0.85rem;
+    padding: 8px 10px;
+  }
 
-    #Prayer_banner h2 {
-        font-size: 1rem;
-    }
+  #Prayer_banner h2 {
+    font-size: 1rem;
+  }
 
-    #Prayer_banner p {
-        font-size: 0.95rem;
-    }
+  #Prayer_banner p {
+    font-size: 0.95rem;
+  }
 
-    #error {
-        font-size: 0.9rem;
-        padding: 10px;
-    }
+  #error {
+    font-size: 0.9rem;
+    padding: 10px;
+  }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
