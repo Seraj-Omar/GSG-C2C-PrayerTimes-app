@@ -4,6 +4,7 @@ import {
   fetchCitiesByCountry,
   fetchPrayerTimes,
 } from "./api/api.js";
+import { getNextPrayer, formatCountdown } from "./utils/utils.js";
 
 const continentSelect = document.getElementById("continent");
 const countrySelect = document.getElementById("country");
@@ -14,9 +15,13 @@ const resetBtn = document.getElementById("resetBtn");
 const nextPrayer = document.getElementById("nextPrayer");
 const countdown = document.getElementById("countdown");
 
+let countdownInterval = null;
+let currentPrayerTimes = {};
+
 document.addEventListener("DOMContentLoaded", () => {
   populateContinents();
   setupEventListeners();
+  restoreSelections();
 });
 
 function populateContinents() {
@@ -59,6 +64,7 @@ async function handleContinentChange() {
       countrySelect.appendChild(option);
     });
     countrySelect.disabled = false;
+    localStorage.setItem('continent', selectedContinent);
   } catch (error) {
     countrySelect.innerHTML =
       '<option value="">Error loading countries</option>';
@@ -87,6 +93,7 @@ async function handleCountryChange() {
     });
 
     citySelect.disabled = false;
+    localStorage.setItem('country', selectedCountry);
   } catch (error) {
     citySelect.innerHTML = '<option value="">Error loading cities</option>';
     console.error("Error fetching cities:", error);
@@ -94,10 +101,18 @@ async function handleCountryChange() {
 }
 
 async function handleCityChange() {
+  const selectedCity = citySelect.value;
+  if (selectedCity) {
+    localStorage.setItem('city', selectedCity);
+  }
   await updatePrayerTimes();
 }
 
 async function handleMethodChange() {
+  const selectedMethod = methodSelect.value;
+  if (selectedMethod) {
+    localStorage.setItem('method', selectedMethod);
+  }
   await updatePrayerTimes();
 }
 
@@ -108,6 +123,7 @@ async function updatePrayerTimes() {
 
   if (!city || !country) {
     resetPrayerTimesTable();
+    stopCountdown();
     return;
   }
 
@@ -115,10 +131,13 @@ async function updatePrayerTimes() {
     showLoadingState();
 
     const prayerTimes = await fetchPrayerTimes(city, country, method);
+    currentPrayerTimes = prayerTimes;
     updatePrayerTimesTable(prayerTimes);
+    startCountdown(prayerTimes);
   } catch (error) {
     console.error("Error fetching prayer times:", error);
     resetPrayerTimesTable();
+    stopCountdown();
   }
 }
 
@@ -143,11 +162,73 @@ function updatePrayerTimesTable(prayerTimes) {
   });
 }
 
+function startCountdown(prayerTimes) {
+  stopCountdown();
+  updateCountdownDisplay(prayerTimes);
+  countdownInterval = setInterval(() => {
+    updateCountdownDisplay(prayerTimes);
+  }, 1000);
+}
+
+function updateCountdownDisplay(prayerTimes) {
+  const nextPrayerInfo = getNextPrayer(prayerTimes);
+  
+  if (nextPrayerInfo) {
+    const { name, time, remaining, isTomorrow } = nextPrayerInfo;
+    nextPrayer.textContent = `${name} at ${time} ${isTomorrow ? '(Tomorrow)' : '(Today)'}`;
+    countdown.textContent = formatCountdown(remaining);
+  } else {
+    nextPrayer.textContent = 'No more prayers today';
+    countdown.textContent = '00:00:00';
+  }
+}
+
+function stopCountdown() {
+  if (countdownInterval) {
+    clearInterval(countdownInterval);
+    countdownInterval = null;
+  }
+  nextPrayer.textContent = '--';
+  countdown.textContent = '00:00:00';
+}
+
+function restoreSelections() {
+  const savedContinent = localStorage.getItem('continent');
+  const savedCountry = localStorage.getItem('country');
+  const savedCity = localStorage.getItem('city');
+  const savedMethod = localStorage.getItem('method');
+  
+  if (savedContinent) {
+    continentSelect.value = savedContinent;
+    handleContinentChange().then(() => {
+      if (savedCountry) {
+        setTimeout(() => {
+          countrySelect.value = savedCountry;
+          handleCountryChange().then(() => {
+            if (savedCity) {
+              setTimeout(() => {
+                citySelect.value = savedCity;
+                if (savedMethod) {
+                  methodSelect.value = savedMethod;
+                }
+                handleCityChange();
+              }, 500);
+            }
+          });
+        }, 500);
+      }
+    });
+  }
+}
+
 function resetApp(){
   resetLocationChoices();
   resetPrayerTimesTable();
   resetCalculationMethod();
+  stopCountdown();
+  localStorage.clear();
 }
+
 function resetLocationChoices(){
   continentSelect.selectedIndex = 0;
   countrySelect.selectedIndex = 0;
@@ -157,9 +238,11 @@ function resetLocationChoices(){
   countrySelect.value = "";
   citySelect.value = "";
 }
+
 function resetCalculationMethod(){
-  methodSelect.value="";
+  methodSelect.value = "";
 }
+
 function resetPrayerTimesTable() {
   const rows = prayerTimesTable.querySelectorAll("tr");
   rows.forEach((row) => {
