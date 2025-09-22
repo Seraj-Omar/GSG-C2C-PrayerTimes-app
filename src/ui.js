@@ -45,15 +45,23 @@ function clearError() {
 
 resetBtn.addEventListener("click", () => {
   continentSelect.value = "";
-  countrySelect.value = "";
-  citySelect.value = "";
+  countrySelect.innerHTML = '<option value="">Select Country....</option>';
+  countrySelect.disabled = true;
+  citySelect.innerHTML = '<option value="">Select City....</option>';
+  citySelect.disabled = true;
   methodSelect.value = "";
+
   prayerTableBody.querySelectorAll("td:nth-child(2)").forEach(td => td.textContent = "-");
+
   nextPrayerEl.textContent = "--";
   countdownEl.textContent = "00:00:00";
+
   clearError();
+
   localStorage.clear();
 });
+
+
 
 function renderCountries(countries) {
   countrySelect.innerHTML = ""; 
