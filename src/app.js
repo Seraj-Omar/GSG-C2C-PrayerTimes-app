@@ -154,8 +154,8 @@ function resetLocationChoices(){
   citySelect.selectedIndex = 0;
   citySelect.disabled = true;
   countrySelect.disabled = true;
-  countrySelect.innerHTML = "";
-  citySelect.innerHTML = "";
+  countrySelect.value = "";
+  citySelect.value = "";
 }
 function resetCalculationMethod(){
   methodSelect.value="";
