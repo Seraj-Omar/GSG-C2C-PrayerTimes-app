@@ -11,7 +11,6 @@ const nextPrayerEl = document.getElementById("nextPrayer");
 const countdownEl = document.getElementById("countdown");
 const errorEl = document.getElementById("error");
 
-
 const cityCache = {};
 
 function renderPrayerTimes(prayers) {
@@ -26,7 +25,7 @@ function renderPrayerTimes(prayers) {
 
 function renderNextPrayer(next) {
   if (next) {
-    nextPrayerEl.textContent = `${next.name} at ${next.time}`;
+    nextPrayerEl.textContent = `${next.name} at ${next.time} ${next.isTomorrow ? '(Tomorrow)' : '(Today)'}`;
     countdownEl.textContent = formatCountdown(next.remaining);
   } else {
     nextPrayerEl.textContent = "No more prayers today";
@@ -34,19 +33,18 @@ function renderNextPrayer(next) {
   }
 }
 
-
 function showError(message) {
   errorEl.textContent = message;
+  errorEl.style.display = 'block';
 }
 
 function clearError() {
   errorEl.textContent = "";
+  errorEl.style.display = 'none';
 }
 
-
-
 resetBtn.addEventListener("click", () => {
-  continentSelect.value = "africa";
+  continentSelect.value = "";
   countrySelect.value = "";
   citySelect.value = "";
   methodSelect.value = "";
@@ -56,7 +54,6 @@ resetBtn.addEventListener("click", () => {
   clearError();
   localStorage.clear();
 });
-
 
 function renderCountries(countries) {
   countrySelect.innerHTML = ""; 
@@ -75,7 +72,6 @@ function renderCountries(countries) {
   countrySelect.disabled = false; 
 }
 
-
 function renderCities(cities) {
   citySelect.innerHTML = "";
   
@@ -93,7 +89,6 @@ function renderCities(cities) {
 
   citySelect.disabled = false;
 }
-
 
 function renderMethods(methods) {
   methodSelect.innerHTML = "";
@@ -149,8 +144,8 @@ countrySelect.addEventListener("change", async () => {
 
 
 async function fetchPrayerTimesHandler() {
-  const city = citySelect.value;
-  const country = countrySelect.value; // أضفنا country لأن api.js يحتاجه
+  const city = citySelect.value; 
+  const country = countrySelect.value; 
   const method = methodSelect.value;
   if (!city || !method || !country) return;
 
@@ -174,9 +169,9 @@ async function fetchPrayerTimesHandler() {
   }
 }
 
+
 citySelect.addEventListener("change", fetchPrayerTimesHandler);
 methodSelect.addEventListener("change", fetchPrayerTimesHandler);
-
 
 
 
@@ -194,4 +189,3 @@ export {
   renderCities,
   renderMethods
 };
-
