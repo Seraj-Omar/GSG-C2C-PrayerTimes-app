@@ -1,5 +1,4 @@
-import { formatCountdown, getNextPrayer } from "./utils/utils.js";
-import { fetchCountriesByContinent, fetchCitiesByCountry, fetchPrayerTimes } from "../src/api/api.js";
+import { formatCountdown, getNextPrayer } from "./utils.js";
 
 const continentSelect = document.getElementById("continent");
 const countrySelect = document.getElementById("country");
@@ -45,23 +44,15 @@ function clearError() {
 
 resetBtn.addEventListener("click", () => {
   continentSelect.value = "";
-  countrySelect.innerHTML = '<option value="">Select Country....</option>';
-  countrySelect.disabled = true;
-  citySelect.innerHTML = '<option value="">Select City....</option>';
-  citySelect.disabled = true;
+  countrySelect.value = "";
+  citySelect.value = "";
   methodSelect.value = "";
-
   prayerTableBody.querySelectorAll("td:nth-child(2)").forEach(td => td.textContent = "-");
-
   nextPrayerEl.textContent = "--";
   countdownEl.textContent = "00:00:00";
-
   clearError();
-
   localStorage.clear();
 });
-
-
 
 function renderCountries(countries) {
   countrySelect.innerHTML = ""; 
@@ -123,7 +114,8 @@ continentSelect.addEventListener("change", async () => {
   citySelect.disabled = true;
 
   try {
-    const countries = await fetchCountriesByContinent(selectedContinent);
+    const res = await fetch(`https://restcountries.com/v3.1/region/${selectedContinent}`);
+    const countries = await res.json();
     renderCountries(countries);
   } catch (error) {
     showError("Failed to load countries.");
@@ -141,47 +133,51 @@ countrySelect.addEventListener("change", async () => {
     if (cityCache[selectedCountry]) {
       renderCities(cityCache[selectedCountry]);
     } else {
-      const cities = await fetchCitiesByCountry(selectedCountry);
-      cityCache[selectedCountry] = cities;
-      renderCities(cities);
+      const res = await fetch("https://countriesnow.space/api/v0.1/countries/cities", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ country: selectedCountry })
+      });
+      const data = await res.json();
+      cityCache[selectedCountry] = data.data;
+      renderCities(data.data);
     }
   } catch (error) {
     showError("Failed to load cities.");
   }
 });
 
-
-async function fetchPrayerTimesHandler() {
-  const city = citySelect.value; 
-  const country = countrySelect.value; 
+async function fetchPrayerTimes() {
+  const city = citySelect.value;
+  const country = countrySelect.value;
   const method = methodSelect.value;
-  if (!city || !method || !country) return;
+  if (!city || !country || !method) return;
 
   try {
-    const timings = await fetchPrayerTimes(city, country, method);
+    const res = await fetch(`https://api.aladhan.com/v1/timingsByCity?city=${city}&country=${country}&method=${method}`);
+    const data = await res.json();
 
     const prayers = {
-      Fajr: timings.Fajr,
-      Dhuhr: timings.Dhuhr,
-      Asr: timings.Asr,
-      Maghrib: timings.Maghrib,
-      Isha: timings.Isha
+      Fajr: data.data.timings.Fajr,
+      Dhuhr: data.data.timings.Dhuhr,
+      Asr: data.data.timings.Asr,
+      Maghrib: data.data.timings.Maghrib,
+      Isha: data.data.timings.Isha
     };
 
     renderPrayerTimes(prayers);
-    const next = getNextPrayer(prayers);
+
+    const next = getNextPrayer(prayers); 
     renderNextPrayer(next);
+
     clearError();
   } catch (error) {
     showError("Failed to load prayer times.");
   }
 }
 
-
-citySelect.addEventListener("change", fetchPrayerTimesHandler);
-methodSelect.addEventListener("change", fetchPrayerTimesHandler);
-
-
+citySelect.addEventListener("change", fetchPrayerTimes);
+methodSelect.addEventListener("change", fetchPrayerTimes);
 
 export {
   continentSelect,
