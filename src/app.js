@@ -10,6 +10,9 @@ const countrySelect = document.getElementById("country");
 const citySelect = document.getElementById("city");
 const methodSelect = document.getElementById("method");
 const prayerTimesTable = document.getElementById("prayerTimes");
+const resetBtn = document.getElementById("resetBtn");
+const nextPrayer = document.getElementById("nextPrayer");
+const countdown = document.getElementById("countdown");
 
 document.addEventListener("DOMContentLoaded", () => {
   populateContinents();
@@ -31,6 +34,7 @@ function setupEventListeners() {
   countrySelect.addEventListener("change", handleCountryChange);
   citySelect.addEventListener("change", handleCityChange);
   methodSelect.addEventListener("change", handleMethodChange);
+  resetBtn.addEventListener("click", resetApp);
 }
 
 async function handleContinentChange() {
@@ -139,6 +143,23 @@ function updatePrayerTimesTable(prayerTimes) {
   });
 }
 
+function resetApp(){
+  resetLocationChoices();
+  resetPrayerTimesTable();
+  resetCalculationMethod();
+}
+function resetLocationChoices(){
+  continentSelect.selectedIndex = 0;
+  countrySelect.selectedIndex = 0;
+  citySelect.selectedIndex = 0;
+  citySelect.disabled = true;
+  countrySelect.disabled = true;
+  countrySelect.innerHTML = "";
+  citySelect.innerHTML = "";
+}
+function resetCalculationMethod(){
+  methodSelect.value="";
+}
 function resetPrayerTimesTable() {
   const rows = prayerTimesTable.querySelectorAll("tr");
   rows.forEach((row) => {
