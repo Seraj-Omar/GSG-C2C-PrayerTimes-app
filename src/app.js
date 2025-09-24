@@ -14,6 +14,8 @@ import {
   nextPrayerEl,
   countdownEl,
   renderContinents,
+  renderCountries,
+  renderCities,
   renderPrayerTimes,
   renderNextPrayer,
   resetPrayerTimesTable,
