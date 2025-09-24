@@ -4,8 +4,9 @@ import { API_ENDPOINTS } from "../config.js";
 export async function fetchCountriesByContinent(continent) {
   const url = `${API_ENDPOINTS.restCountries}/${continent}`;
   const data = await safeFetch(url);
-  return data.map((country) => country.name.common).sort();
+  return data.sort((a, b) => a.name.common.localeCompare(b.name.common));
 }
+
 
 export async function fetchCitiesByCountry(country) {
   const url = API_ENDPOINTS.countriesNow;
