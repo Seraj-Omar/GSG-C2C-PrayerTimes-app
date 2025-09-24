@@ -1,4 +1,4 @@
-import { formatCountdown } from "../src/utils";
+import { formatCountdown } from "../src/utils/utils.js";
 
 const continentSelect = document.getElementById("continent");
 const countrySelect = document.getElementById("country");
@@ -11,7 +11,7 @@ const countdownEl = document.getElementById("countdown");
 const errorEl = document.getElementById("error");
 
 const cityCache = {};
-console.log(CONTINENTS);
+// console.log(CONTINENTS);
 
 function renderPrayerTimes(prayers) {
   const prayerNames = ["Fajr", "Dhuhr", "Asr", "Maghrib", "Isha"];
