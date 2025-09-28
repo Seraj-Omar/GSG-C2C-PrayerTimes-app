@@ -23,7 +23,8 @@ function renderPrayerTimes(prayers) {
 }
 
 function renderNextPrayer(next) {
-  if (next) {
+  const validPrayers = ["Fajr", "Dhuhr", "Asr", "Maghrib", "Isha"];
+  if (next && validPrayers.includes(next.name)) {
     nextPrayerEl.textContent = `${next.name} at ${next.time} ${next.isTomorrow ? '(Tomorrow)' : '(Today)'}`;
     countdownEl.textContent = formatCountdown(next.remaining);
   } else {
