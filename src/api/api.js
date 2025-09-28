@@ -1,5 +1,6 @@
 import { safeFetch } from "../utils/utils.js";
 import { API_ENDPOINTS } from "../config.js";
+import { cityCache } from "../ui.js";
 
 export async function fetchCountriesByContinent(continent) {
   const url = `${API_ENDPOINTS.restCountries}/${continent}`;
@@ -9,6 +10,9 @@ export async function fetchCountriesByContinent(continent) {
 
 
 export async function fetchCitiesByCountry(country) {
+  if (cityCache[country]) {
+    return cityCache[country];
+  }
   const url = API_ENDPOINTS.countriesNow;
   const data = await safeFetch(url, {
     method: "POST",
@@ -17,6 +21,7 @@ export async function fetchCitiesByCountry(country) {
   });
 
   if (!data.data) throw new Error("No cities found");
+  cityCache[country] = data.data.sort();
   return data.data.sort();
 }
 

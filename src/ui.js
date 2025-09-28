@@ -1,5 +1,6 @@
 import { formatCountdown } from "../src/utils/utils.js";
 
+
 const continentSelect = document.getElementById("continent");
 const countrySelect = document.getElementById("country");
 const citySelect = document.getElementById("city");
@@ -10,7 +11,7 @@ const nextPrayerEl = document.getElementById("nextPrayer");
 const countdownEl = document.getElementById("countdown");
 const errorEl = document.getElementById("error");
 
-const cityCache = {};
+export const cityCache = {};
 // console.log(CONTINENTS);
 
 function renderPrayerTimes(prayers) {
@@ -121,7 +122,6 @@ export {
   resetBtn,
   nextPrayerEl,
   countdownEl,
-  cityCache,
   renderContinents,
   renderCountries,
   renderCities,
