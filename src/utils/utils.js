@@ -20,10 +20,12 @@ export function formatCountdown(ms) {
 }
 
 export function getNextPrayer(prayers) {
+  const prayerNames = ["Fajr", "Dhuhr", "Asr", "Maghrib", "Isha"];
   const now = new Date();
+   // now.setHours(23, 30, 0, 0);
   const prayerEntries = Object.entries(prayers);
   
-  const prayerTimes = prayerEntries.map(([name, timeStr]) => {
+  const prayerTimes = prayerEntries.filter(([name]) => prayerNames.includes(name)).map(([name, timeStr]) => {
     const [hours, minutes] = timeStr.split(":").map(Number);
     const prayerTime = new Date();
     prayerTime.setHours(hours, minutes, 0, 0);
