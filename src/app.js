@@ -21,7 +21,9 @@ import {
   resetPrayerTimesTable,
   resetLocationChoices,
   resetCalculationMethod,
-  showLoadingState
+  showLoadingState,
+  cityCache  
+
 } from "./ui.js";
 
 let countdownInterval = null;
@@ -64,12 +66,16 @@ async function handleCountryChange() {
   const country = countrySelect.value;
   citySelect.innerHTML = '<option value="">Select City....</option>';
   citySelect.disabled = true;
-
+  if (cityCache[country]) {
+      renderCities(cityCache[country]);   
+      return;
+    }
   if (!country) return;
 
   try {
     citySelect.innerHTML = '<option value="">Loading cities...</option>';
     const cities = await fetchCitiesByCountry(country);
+    cityCache[country] = cities;         
     renderCities(cities);
     localStorage.setItem('country', country);
   } catch (error) {
