@@ -27,6 +27,13 @@ import {
 
 let countdownInterval = null;
 
+const localStorageKeys = {
+  continent: "continent",
+  country: "country",
+  city: "city",
+  method: "method"
+};
+
 document.addEventListener("DOMContentLoaded", () => {
   renderContinents(CONTINENTS);
   setupEventListeners();
@@ -54,7 +61,7 @@ async function handleContinentChange() {
     countrySelect.innerHTML = '<option value="">Loading countries...</option>';
     const countries = await fetchCountriesByContinent(continent);
     renderCountries(countries);
-    localStorage.setItem("continent", continent);
+    localStorage.setItem(localStorageKeys.continent, continent);
   } catch (error) {
     console.error("Error fetching countries:", error);
     countrySelect.innerHTML =
@@ -78,7 +85,7 @@ async function handleCountryChange() {
     const cities = await fetchCitiesByCountry(country);
     cityCache[country] = cities;
     renderCities(cities);
-    localStorage.setItem("country", country);
+    localStorage.setItem(localStorageKeys.country, country);
   } catch (error) {
     console.error("Error fetching cities:", error);
     citySelect.innerHTML = '<option value="">Error loading cities</option>';
@@ -88,14 +95,14 @@ async function handleCountryChange() {
 async function handleCityChange() {
   const city = citySelect.value;
   if (!city) return;
-  localStorage.setItem("city", city);
+  localStorage.setItem(localStorageKeys.city, city);
   await updatePrayerTimes();
 }
 
 async function handleMethodChange() {
   const method = methodSelect.value;
   if (!method) return;
-  localStorage.setItem("method", method);
+  localStorage.setItem(localStorageKeys.method, method);
   await updatePrayerTimes();
 }
 
@@ -144,10 +151,10 @@ function stopCountdown() {
 }
 
 async function restoreSelections() {
-  const savedContinent = localStorage.getItem("continent");
-  const savedCountry = localStorage.getItem("country");
-  const savedCity = localStorage.getItem("city");
-  const savedMethod = localStorage.getItem("method");
+  const savedContinent = localStorage.getItem(localStorageKeys.continent);
+  const savedCountry = localStorage.getItem(localStorageKeys.country);
+  const savedCity = localStorage.getItem(localStorageKeys.city);
+  const savedMethod = localStorage.getItem(localStorageKeys.method);
 
   if (savedContinent) {
     continentSelect.value = savedContinent;
@@ -175,8 +182,7 @@ function resetApp() {
   resetPrayerTimesTable();
   resetCalculationMethod();
   stopCountdown();
-  localStorage.removeItem("continent");
-  localStorage.removeItem("country");
-  localStorage.removeItem("city");
-  localStorage.removeItem("method");
+  Object.values(localStorageKeys).forEach((key) =>
+    localStorage.removeItem(key)
+  );
 }
