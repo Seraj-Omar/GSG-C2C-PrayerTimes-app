@@ -1,4 +1,4 @@
-import { CONTINENTS, DEFAULT_METHOD } from "./config.js";
+import { CONTINENTS } from "./config.js";
 import {
   fetchCountriesByContinent,
   fetchCitiesByCountry,
@@ -22,8 +22,7 @@ import {
   resetLocationChoices,
   resetCalculationMethod,
   showLoadingState,
-  cityCache  
-
+  cityCache
 } from "./ui.js";
 
 let countdownInterval = null;
@@ -55,10 +54,11 @@ async function handleContinentChange() {
     countrySelect.innerHTML = '<option value="">Loading countries...</option>';
     const countries = await fetchCountriesByContinent(continent);
     renderCountries(countries);
-    localStorage.setItem('continent', continent);
+    localStorage.setItem("continent", continent);
   } catch (error) {
     console.error("Error fetching countries:", error);
-    countrySelect.innerHTML = '<option value="">Error loading countries</option>';
+    countrySelect.innerHTML =
+      '<option value="">Error loading countries</option>';
   }
 }
 
@@ -66,18 +66,19 @@ async function handleCountryChange() {
   const country = countrySelect.value;
   citySelect.innerHTML = '<option value="">Select City....</option>';
   citySelect.disabled = true;
+
   if (cityCache[country]) {
-      renderCities(cityCache[country]);   
-      return;
-    }
+    renderCities(cityCache[country]);
+    return;
+  }
   if (!country) return;
 
   try {
     citySelect.innerHTML = '<option value="">Loading cities...</option>';
     const cities = await fetchCitiesByCountry(country);
-    cityCache[country] = cities;         
+    cityCache[country] = cities;
     renderCities(cities);
-    localStorage.setItem('country', country);
+    localStorage.setItem("country", country);
   } catch (error) {
     console.error("Error fetching cities:", error);
     citySelect.innerHTML = '<option value="">Error loading cities</option>';
@@ -87,22 +88,23 @@ async function handleCountryChange() {
 async function handleCityChange() {
   const city = citySelect.value;
   if (!city) return;
-  localStorage.setItem('city', city);
+  localStorage.setItem("city", city);
   await updatePrayerTimes();
 }
 
 async function handleMethodChange() {
-  const method = methodSelect.value || DEFAULT_METHOD;
-  localStorage.setItem('method', method);
+  const method = methodSelect.value;
+  if (!method) return;
+  localStorage.setItem("method", method);
   await updatePrayerTimes();
 }
 
 async function updatePrayerTimes() {
   const city = citySelect.value;
   const country = countrySelect.value;
-  const method = methodSelect.value || DEFAULT_METHOD;
+  const method = methodSelect.value;
 
-  if (!city || !country) {
+  if (!city || !country || !method) {
     resetPrayerTimesTable();
     stopCountdown();
     return;
@@ -123,7 +125,10 @@ async function updatePrayerTimes() {
 function startCountdown(prayerTimes) {
   stopCountdown();
   updateCountdownDisplay(prayerTimes);
-  countdownInterval = setInterval(() => updateCountdownDisplay(prayerTimes), 1000);
+  countdownInterval = setInterval(
+    () => updateCountdownDisplay(prayerTimes),
+    1000
+  );
 }
 
 function updateCountdownDisplay(prayerTimes) {
@@ -134,15 +139,15 @@ function updateCountdownDisplay(prayerTimes) {
 function stopCountdown() {
   if (countdownInterval) clearInterval(countdownInterval);
   countdownInterval = null;
-  nextPrayerEl.textContent = '--';
-  countdownEl.textContent = '00:00:00';
+  nextPrayerEl.textContent = "--";
+  countdownEl.textContent = "00:00:00";
 }
 
 async function restoreSelections() {
-  const savedContinent = localStorage.getItem('continent');
-  const savedCountry = localStorage.getItem('country');
-  const savedCity = localStorage.getItem('city');
-  const savedMethod = localStorage.getItem('method');
+  const savedContinent = localStorage.getItem("continent");
+  const savedCountry = localStorage.getItem("country");
+  const savedCity = localStorage.getItem("city");
+  const savedMethod = localStorage.getItem("method");
 
   if (savedContinent) {
     continentSelect.value = savedContinent;
@@ -152,10 +157,16 @@ async function restoreSelections() {
       await handleCountryChange();
       if (savedCity) {
         citySelect.value = savedCity;
-        if (savedMethod) methodSelect.value = savedMethod;
-        await handleCityChange();
       }
     }
+  }
+
+  if (savedMethod) {
+    methodSelect.value = savedMethod;
+  }
+
+  if (savedCity && savedMethod) {
+    await handleCityChange();
   }
 }
 
@@ -164,8 +175,8 @@ function resetApp() {
   resetPrayerTimesTable();
   resetCalculationMethod();
   stopCountdown();
-  localStorage.removeItem('continent');
-  localStorage.removeItem('country');
-  localStorage.removeItem('city');
-  localStorage.removeItem('method');
+  localStorage.removeItem("continent");
+  localStorage.removeItem("country");
+  localStorage.removeItem("city");
+  localStorage.removeItem("method");
 }
